@@ -2,7 +2,7 @@ import React, { useState, useEffect, createElement } from "react";
 import { HiUserCircle } from "react-icons/hi";
 import { Text, Button } from "@chakra-ui/react";
 import axios from "axios";
-import {positionStackApiKey} from './Config'
+import {positionStackApiKey} from '../Config'
 
 function Dashboard(props) {
   const api = "https://605c88b16d85de00170da6c9.mockapi.io/";
