@@ -83,7 +83,7 @@ function LoginForm(props) {
             <Button mt={4} colorScheme="teal" size="md" type="submit">
               Log in
             </Button>
-            <Button mt={4} size="sm" onClick={()=>props.setPage("signin")} >Sign in</Button>
+            <Button mt={4} size="sm" onClick={()=>props.setPage("signin")} >Sign Up</Button>
           </Container>
         </form>
       </div>

@@ -126,7 +126,8 @@ function Dashboard(props) {
           paddingTop: "5%",
           margin: "0 auto",
           width: "90vw",
-          height: "90vh",
+          height: "80vh",
+          marginRadius:'25px'
         }}
       ></div>
     </div>

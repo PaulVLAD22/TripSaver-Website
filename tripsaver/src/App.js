@@ -1,6 +1,6 @@
 import { ChakraProvider } from '@chakra-ui/react';
 import React, {useState} from 'react'
-import './App.css';
+
 import LoginForm from './components/login/LoginForm';
 import SignupForm from './components/login/SignupForm';
 import Dashboard from './components/Dashboard'
@@ -11,7 +11,7 @@ function App() {
   const [user, setUser] = useState({email:"s",uid:0});
   const [error, setError] = useState("");
   const [pageToDisplay,setPageToDisplay]=useState("login")
-  const api="https://605c88b16d85de00170da6c9.mockapi.io/";
+  //const api="https://605c88b16d85de00170da6c9.mockapi.io/";
 
 
 
@@ -67,19 +67,19 @@ function App() {
     }
     console.log(details)
 
-    await axios({
-      method: 'post',
-      url: api+"user",
-      data: {
-        email:details.email,
-        password:details.password
-      }
-    }).then((response)=>{
-      console.log(response)
-      setPageToDisplay("login");
-    },(postError)=>{
-      console.log(postError)
-    })
+    // await axios({
+    //   method: 'post',
+    //   url: api+"user",
+    //   data: {
+    //     email:details.email,
+    //     password:details.password
+    //   }
+    // }).then((response)=>{
+    //   console.log(response)
+    //   setPageToDisplay("login");
+    // },(postError)=>{
+    //   console.log(postError)
+    // })
 
 
   }
