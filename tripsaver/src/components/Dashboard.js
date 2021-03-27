@@ -2,18 +2,12 @@ import React, { useState, useEffect, createElement } from "react";
 import { HiUserCircle } from "react-icons/hi";
 import { Text, Button, position } from "@chakra-ui/react";
 import axios from "axios";
-import { positionStackApiKey } from "../Config";
+import { locationIQApiKey } from "../Config";
 
 function Dashboard(props) {
-  const positionStackReverseApi =
-    "http://api.positionstack.com/v1/reverse?access_key=" +
-    positionStackApiKey +
-    "&query=";
-  const positionStackApi =
-    "http://api.positionstack.com/v1/forward?access_key=" +
-    positionStackApiKey +
-    "&query=";
-  const [map, setMap] = useState("");
+  
+  const locationIQApi =
+    "https://us1.locationiq.com/v1/reverse.php?key="+locationIQApiKey;
 
   useEffect(async () => {
 
@@ -28,20 +22,34 @@ function Dashboard(props) {
         map.removeLayer(marker);
       });
     }
-    function addMarker(e) {
+    async function addMarker(e) {
       //POST
   
-      const marker = new L.marker(e.latlng)
+      const marker = new L.marker(e.latlng,{title:"Country, City"})
         .addTo(map)
         .bindPopup(buttonRemove);
 
       marker.on("popupopen", removeMarker);
 
+      console.log("https://cors-anywhere.herokuapp.com/"+locationIQApi+"&lat="+e.latlng.lat+'&lon='+e.latlng.lng+"&format=json")
+      
+      await axios({
+      method: "GET",
+      url: "https://cors-anywhere.herokuapp.com/"+locationIQApi+"&lat="+e.latlng.lat+'&lon='+e.latlng.lng+"&format=json",
+      data: {},
+    }).then(
+      (response) => {
+        console.log(response.data.address.city+response.data.address.country)
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+
     }
     //map
     var L = window.L;
     var map = L.map("map").setView([53,40],4);
-    setMap(map)
     
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
       attribution: "© OpenStreetMap contributors",
@@ -53,18 +61,7 @@ function Dashboard(props) {
       { lat: 20, long: 20, city: "City", country: "Romania" },
     ];
     
-    // await axios({
-    //   method: "GET",
-    //   url: api + "spot",
-    //   data: {},
-    // }).then(
-    //   (response) => {
-    //     spots = response.data;
-    //   },
-    //   (error) => {
-    //     console.log(error);
-    //   }
-    // );
+    
 
     for (let i = 0; i < spots.length; i++) {
       const marker = new L.marker([spots[i].lat, spots[i].long], {

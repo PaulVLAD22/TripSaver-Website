@@ -8,7 +8,7 @@ import axios from 'axios'
 
 function App() {
 
-  const [user, setUser] = useState({email:"",uid:0});
+  const [user, setUser] = useState({email:"s",uid:0});
   const [error, setError] = useState("");
   const [pageToDisplay,setPageToDisplay]=useState("login")
   const api="https://605c88b16d85de00170da6c9.mockapi.io/";
