@@ -8,7 +8,7 @@ import axios from 'axios'
 
 function App() {
 
-  const [user, setUser] = useState({name:"s",email:"s",uid:0});
+  const [user, setUser] = useState({email:"",uid:0});
   const [error, setError] = useState("");
   const [pageToDisplay,setPageToDisplay]=useState("login")
   const api="https://605c88b16d85de00170da6c9.mockapi.io/";
@@ -17,43 +17,42 @@ function App() {
 
   const Login = async details =>{
 
-    let uid=0;
+    setUser({email:details.email,uid:0})
 
     // geting user id
-    await axios({
-      method: 'POST',
-      url: api+"login",
-      data: {
-        email:details.email,
-        password:details.password
-      }
-    }).then((response)=>{
-      let postResponse = response;
-      console.log(postResponse)
-      uid=postResponse.data.userId
-    },(postError)=>{
-      setError("Wrong Details");
-      console.log(postError)
-      return
-    })
-    console.log(uid)
+    // await axios({
+    //   method: 'POST',
+    //   url: api+"login",
+    //   data: {
+    //     email:details.email,
+    //     password:details.password
+    //   }
+    // }).then((response)=>{
+    //   let postResponse = response;
+    //   console.log(postResponse)
+    //   uid=postResponse.data.userId
+    // },(postError)=>{
+    //   setError("Wrong Details");
+    //   console.log(postError)
+    //   return
+    // })
     
     // getting user data by id
-    await axios({
-      method: 'GET',
-      url: api+"user/"+uid,
-      data: {
-        email:details.email,
-        password:details.password
-      }
-    }).then((response)=>{
-      console.log(response)
-      setUser({email:response.data.email,name:response.data.name,uid:uid})
+    // await axios({
+    //   method: 'GET',
+    //   url: api+"user/"+uid,
+    //   data: {
+    //     email:details.email,
+    //     password:details.password
+    //   }
+    // }).then((response)=>{
+    //   console.log(response)
+    //   setUser({email:response.data.email,name:response.data.name,uid:uid})
 
-    },(getError)=>{
-      setError("Wrong Details");
-      console.log(getError)
-    })
+    // },(getError)=>{
+    //   setError("Wrong Details");
+    //   console.log(getError)
+    // })
   
   }
 
@@ -90,7 +89,7 @@ function App() {
       <div className="App">
         {user.email!=""?
         <div className="welcome">
-          <Dashboard name={user.name} email={user.email} logout={Logout}></Dashboard>
+          <Dashboard email={user.email} logout={Logout}></Dashboard>
         </div>
         :
         

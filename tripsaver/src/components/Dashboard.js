@@ -1,75 +1,83 @@
 import React, { useState, useEffect, createElement } from "react";
 import { HiUserCircle } from "react-icons/hi";
-import { Text, Button } from "@chakra-ui/react";
+import { Text, Button, position } from "@chakra-ui/react";
 import axios from "axios";
-import {positionStackApiKey} from '../Config'
+import { positionStackApiKey } from "../Config";
 
 function Dashboard(props) {
-  const api = "https://605c88b16d85de00170da6c9.mockapi.io/";
-  const positionStackReverseApi=  "http://api.positionstack.com/v1/reverse?access_key="+positionStackApiKey+"&query=";
+  const positionStackReverseApi =
+    "http://api.positionstack.com/v1/reverse?access_key=" +
+    positionStackApiKey +
+    "&query=";
+  const positionStackApi =
+    "http://api.positionstack.com/v1/forward?access_key=" +
+    positionStackApiKey +
+    "&query=";
   const [map, setMap] = useState("");
-  
- 
+
   useEffect(async () => {
+
+    const buttonRemove =
+      '<button type="button" class="remove">Delete Marker</button>';
+
+    function removeMarker() {
+      //Delete
+      const marker = this;
+      const btn = document.querySelector(".remove");
+      btn.addEventListener("click", function() {
+        map.removeLayer(marker);
+      });
+    }
+    function addMarker(e) {
+      //POST
+  
+      const marker = new L.marker(e.latlng)
+        .addTo(map)
+        .bindPopup(buttonRemove);
+
+      marker.on("popupopen", removeMarker);
+
+    }
+    //map
     var L = window.L;
-    var mymap = L.map("mapid").setView([50, 50], 4);
-    setMap(mymap);
-    L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png").addTo(mymap);
-
-    let spots;
-    await axios({
-      method: "GET",
-      url: api + "spot",
-      data: {},
-    }).then(
-      (response) => {
-        spots = response.data;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-
-    console.log(spots);
+    var map = L.map("map").setView([53,40],4);
+    setMap(map)
     
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "© OpenStreetMap contributors",
+    }).addTo(map);
+
+
+    let spots = [
+      { lat: 12, long: 13, country: "Romania", city: "Bucharest" },
+      { lat: 20, long: 20, city: "City", country: "Romania" },
+    ];
+    
+    // await axios({
+    //   method: "GET",
+    //   url: api + "spot",
+    //   data: {},
+    // }).then(
+    //   (response) => {
+    //     spots = response.data;
+    //   },
+    //   (error) => {
+    //     console.log(error);
+    //   }
+    // );
+
     for (let i = 0; i < spots.length; i++) {
-      console.log(spots[i]);
-      
-      var marker = L.marker([spots[i].lat, spots[i].long])
-        .addTo(mymap);
+      const marker = new L.marker([spots[i].lat, spots[i].long], {
+        draggable: true,
+      })
+        .addTo(map)
+        .bindPopup(buttonRemove);
 
-      var p= L.DomUtil.create('p','por');
-      
-      var popup = L.popup()
-      .setLatLng([spots[i].lat, spots[i].long])
-      .setContent(p)
-      .openOn(mymap);
-
-      marker.bindPopup(popup).openPopup();
+      // event remove marker
+      marker.on("popupopen", removeMarker);
     }
 
-    var popup = L.popup();
-
-    async function onMapClick (e) {
-      await axios({
-        method: "POST",
-        url: api + "spot",
-        data: {},
-      }).then(
-        (response) => {
-          console.log(response)
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-      
-      L.marker(e.latlng).addTo(mymap);
-    }
-    
-    mymap.on("click", onMapClick);
-   
-    
+    map.on("click", addMarker);
   }, []);
 
   return (
@@ -77,6 +85,10 @@ function Dashboard(props) {
       style={{
         width: "100vw",
         height: "100vh",
+        display:'flex',
+        flexDirection:'column',
+        justifyContent:'center',
+        alignItems:'center',
         background:
           "linear-gradient(90deg, rgba(12,24,21,1) 0%, rgba(20,99,89,1) 100%)",
       }}
@@ -104,15 +116,15 @@ function Dashboard(props) {
           style={{ position: "relative", bottom: "-5px", cursor: "pointer" }}
         >
           <HiUserCircle fontSize="28px" style={{ display: "inline-block" }} />
-          {props.name}
+          {props.email}
         </Text>
         <Button color="teal" onClick={props.logout}>
           {" "}
           Logout
         </Button>
       </nav>
-      <div
-        id="mapid"
+     <div
+        id="map"
         style={{
           paddingTop: "5%",
           margin: "0 auto",
