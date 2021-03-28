@@ -1,10 +1,12 @@
-import React, { useState, useEffect, createElement } from "react";
+import React, { useEffect } from "react";
 import { HiUserCircle } from "react-icons/hi";
-import { Text, Button, position } from "@chakra-ui/react";
+import { Text, Button} from "@chakra-ui/react";
 import axios from "axios";
 import { locationIQApiKey } from "../Config";
 
-function Dashboard(props) {
+
+
+const Dashboard = ({logout,email}) => {
   
   const locationIQApi =
     "https://us1.locationiq.com/v1/reverse.php?key="+locationIQApiKey;
@@ -113,9 +115,9 @@ function Dashboard(props) {
           style={{ position: "relative", bottom: "-5px", cursor: "pointer" }}
         >
           <HiUserCircle fontSize="28px" style={{ display: "inline-block" }} />
-          {props.email}
+          {email}
         </Text>
-        <Button color="teal" onClick={props.logout}>
+        <Button color="teal" onClick={logout}>
           {" "}
           Logout
         </Button>
@@ -127,7 +129,7 @@ function Dashboard(props) {
           margin: "0 auto",
           width: "90vw",
           height: "80vh",
-          marginRadius:'25px'
+          marginRadius:'25px' 
         }}
       ></div>
     </div>

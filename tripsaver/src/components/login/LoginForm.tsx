@@ -9,15 +9,22 @@ import {
   Container,
 } from "@chakra-ui/react";
 
-function SignupForm(props) {
-  const [details, setDetails] = useState({ email: "", password: "", confirmPassword:"" });
+type Props = {
+  Login:Function;
+  setPage:Function;
+  error:string;
+}
 
-  const submitHandler = (e) => {
+const LoginForm = ({Login,setPage,error}:Props) : JSX.Element=> {
+  const [details, setDetails] = useState({ email: "", password: "" });
+
+  const submitHandler = (e:React.FormEvent) => {
     e.preventDefault();
-    props.Signup(details)
+    Login(details);
   };
+
   return (
-    <div style={{ width: "100vw", height: "100vh",background:"linear-gradient(45deg, rgba(12,24,21,1) 0%, rgba(20,99,89,1) 100%)" }}>
+    <div style={{ width: "100vw", height: "100vh",background:"linear-gradient(45deg, rgba(12,24,21,1) 0%, rgba(20,99,89,1) 100%)"}}>
       <div
         style={{
           width: "100vw",
@@ -46,10 +53,10 @@ function SignupForm(props) {
               color="teal"
             >
               Kite
-              <FcGlobe style={{ display: "inline-block" }} />
+              <FcGlobe style={{ display: "inline-block",position:"relative",top:'-3px' }} />
             </Text>
-            {props.error != "" && (
-              <Text fontSize="lg" color={"teal.600"}>{props.error}</Text>
+            {error != "" && (
+              <Text fontSize="lg" color={"teal.600"}>{error}</Text>
             )}
             <FormControl>
               <FormLabel htmlFor="email">Email:</FormLabel>
@@ -65,8 +72,6 @@ function SignupForm(props) {
                 }}
                 value={details.email}
               />
-            </FormControl>
-            <FormControl>
               <FormLabel htmlFor="password">Password</FormLabel>
               <Input
                 required={true}
@@ -81,25 +86,10 @@ function SignupForm(props) {
                 value={details.password}
               />
             </FormControl>
-            <FormControl >
-              <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
-              <Input
-                required={true}
-                size="md"
-                variant="filled"
-                type="password"
-                name="confirmPassword"
-                id="confirmPassword"
-                onChange={(e) => {
-                  setDetails({ ...details, confirmPassword: e.target.value });
-                }}
-                value={details.confirmPassword}
-              />
-            </FormControl>
             <Button mt={4} colorScheme="teal" size="md" type="submit">
-              Sign up
+              Log in
             </Button>
-            <Button mt={4} size="sm" onClick={()=>props.setPage("login")}>Log in</Button>
+            <Button mt={4} size="sm" onClick={()=>setPage("signin")} >Sign Up</Button>
           </Container>
         </form>
       </div>
@@ -107,5 +97,4 @@ function SignupForm(props) {
   );
 }
 
-export default SignupForm
-
+export default LoginForm;

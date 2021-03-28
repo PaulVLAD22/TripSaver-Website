@@ -1,0 +1,1 @@
+export const locationIQApiKey="pk.f65e0007a223abf972ac903b000f5a48"

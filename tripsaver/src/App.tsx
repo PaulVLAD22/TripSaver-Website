@@ -8,16 +8,25 @@ import axios from 'axios'
 
 function App() {
 
-  const [user, setUser] = useState({email:"s",uid:0});
+  const [user, setUser] = useState({email:"",uid:0});
   const [error, setError] = useState("");
   const [pageToDisplay,setPageToDisplay]=useState("login")
   //const api="https://605c88b16d85de00170da6c9.mockapi.io/";
 
 
+  type DetailsLogin={
+    email:string;
+    password:string;
+  }
+  type DetailsSignup={
+    email:string;
+    password:string;
+    confirmPassword:string;
+  }
 
-  const Login = async details =>{
+  const Login = async ({email, password}:DetailsLogin) =>{
 
-    setUser({email:details.email,uid:0})
+    setUser({email:email,uid:0})
 
     // geting user id
     // await axios({
@@ -57,16 +66,14 @@ function App() {
   }
 
   const Logout = () => {
-    setUser({email:""})
+    setUser({email:"",uid:0})
     
   }
 
-  const Signup = async details =>{
-    if (details.password!=details.confirmPassword){
+  const Signup = async ({email, password, confirmPassword}:DetailsSignup) =>{
+    if (password!=confirmPassword){
       setError("Passwords don't match");
     }
-    console.log(details)
-
     // await axios({
     //   method: 'post',
     //   url: api+"user",
@@ -80,8 +87,6 @@ function App() {
     // },(postError)=>{
     //   console.log(postError)
     // })
-
-
   }
 
   return (
